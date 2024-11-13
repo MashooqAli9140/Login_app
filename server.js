@@ -6,7 +6,7 @@ const BodyParser = require("body-parser");
 const Users = require("./model/usersDB.js"); // Import the User model from database
 const Bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "akfasoihduiasbdvuiashdfweuhfu&@#%$@aofhaolfjnasdfjiefjif"; // Secret for signing JWT tokens
+
 
 // Connect to MongoDB
 const mongoose = require("mongoose");
@@ -59,7 +59,7 @@ app.post("/api/register", async (req, res) => {
 app.post("/update-password", async (req, res) => {
   const { token, newpassword } = req.body; // Get token and new password from request body
   try {
-    const user = jwt.verify(token, JWT_SECRET); // Verify JWT token to authenticate user
+    const user = jwt.verify(token, process.env.JWT_SECRET); // Verify JWT token to authenticate user
     const userID = user.id;
     const founduser = await Users.findById(userID); // Find the user by ID
 
