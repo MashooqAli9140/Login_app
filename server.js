@@ -4,7 +4,7 @@ const app = express();
 const path = require("path");
 const BodyParser = require("body-parser");
 const Users = require("./model/usersDB.js"); // Import the User model from database
-const Bcrypt = require("bcrypt");
+const Bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 
