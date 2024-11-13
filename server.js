@@ -96,7 +96,7 @@ app.post("/login", async (req, res) => {
           id: founduser._id,
           username: founduser.username,
         },
-        JWT_SECRET
+        process.env.JWT_SECRET
       );
 
       // Check user role and set redirected URL accordingly
