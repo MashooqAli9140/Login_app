@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/images/logo.png" type="image/png" />
+    <link rel="stylesheet" href="./style.css" />
+    <title> FSD APP </title>
+  </head>
+  <body>
+
+    <div class="namebox">
+      <h1 id="loggedinuser"></h1>
+      <button id="getallusersdata">GET USER DATA</button>
+      <br />
+      <a href="/updatepassword.html" target="_blank"> Change Password? </a>
+    
+      <br />
+      <a href="/"> Sing Up as User? </a> 
+    </div>
+
+    <div class="usertable">
+      <table id="tablebody">
+        <thead>
+          <tr>
+            <th style="width: 40%">Id</th>
+            <th style="width: 40%">Name</th>
+            <th>Roles</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- //we will ad content for table data in JS below -->
+        </tbody>
+      </table>
+    </div>
+
+
+    <!-- ---------//JS CODE BELOW//-------- -->
+    <script>
+      const params = new URLSearchParams(window.location.search); //get url data by doing this
+      const name = params.get("name"); //geting name from incoming URL
+      const loggedinuser = document.getElementById("loggedinuser"); //h1 for showing details from database
+      loggedinuser.innerHTML = `Hello Admin ${name}, Do you want all Users data?`;
+
+      const getuserdata = document.getElementById("getallusersdata"); //btn for getting user data
+      const tablediv = document.querySelector(".usertable"); // data table div
+      const tablebody = document
+        .getElementById("tablebody")
+        .querySelector("tbody"); // getting data table body
+      getuserdata.addEventListener("click", fetchuserdata); // add event for run the function which is fetching data from database
+
+      async function fetchuserdata(e) {
+        e.preventDefault();
+        try {
+          const fetchdata = await fetch("/allpost"); // fecthing all the data from mongoDB
+          if (!fetchdata.ok) {
+            throw new Error("error while fetching");
+          }
+          const data = await fetchdata.json();
+
+          //searching for ever user and creating table data for every user
+          data.forEach((user) => {
+            const row = document.createElement("tr"); //creating row for user
+
+            const idpart = document.createElement("td"); //table data section for user id
+            idpart.innerText = user._id;
+
+            const namepart = document.createElement("td"); //table data section for user name
+            namepart.innerText = user.username;
+
+            const rolepart = document.createElement("td"); //table data section for user role
+            rolepart.innerText = user.roles;
+
+            //append all the data in one row then
+            row.appendChild(idpart);
+            row.appendChild(namepart);
+            row.appendChild(rolepart);
+
+            // appending the all data in tablebody
+            tablebody.appendChild(row);
+            getuserdata.disabled = true; //disable btn after click
+            getuserdata.style.cursor = "not-allowed"; //cursor disabled
+          });
+          tablediv.style.display = "block"; // after successfully fetching the data then show all the data
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/logo.png" type="image/png">
+    <link rel="stylesheet" href="./style.css">
+    <title>FSD APP</title>
+</head>
+<body>
+    <div class="namebox">
+        <h1 id="loggedinuser" style="text-align: center;"></h1>
+        <a href="/updatepassword.html" target="_blank"> Change Password? </a>
+        <br>
+        <a href="/"> Sing Up as Admin? </a>
+
+
+    </div>
+     
+     <script>
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get('name');
+        const loggedinuser = document.getElementById("loggedinuser");
+        loggedinuser.innerHTML = `Hello ${name}, How are you?`;
+
+     </script>
+</body>
+</html>

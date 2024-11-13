@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/images/logo.png" type="image/png">
+    <link rel="stylesheet" href="./style.css" />
+    <title>FSD APP</title>
+  </head>
+  <body>
+    <div class="box">
+      <div class="heading">
+        <h1>Sign Up</h1>
+      </div>
+
+      <form id="reg">
+        <input
+          type="text"
+          id="username"
+          placeholder="create Username"
+          required="true"
+        />
+        <input
+          type="password"
+          minlength="6"
+          id="password"
+          placeholder="create password"
+          required="true"
+        />
+
+        <select name="ROLE" id="select-role" required="true">
+          <option value="select">Select Role</option>
+          <option value="USER">User</option>
+          <option value="ADMIN">Admin</option>
+        </select>
+
+        <button type="submit" id="btn">Sign Up</button>
+      </form>
+      <a href="/login.html" id="loginlink">Already have an account? Login Now</a>
+    </div>
+
+    <script>
+      const form = document.getElementById("reg");
+      async function HandleRegister(e) {
+        e.preventDefault();
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const roles = document.getElementById("select-role").value;
+        const btn = document.getElementById("btn");
+
+        //post details to DB
+        const Postdata = await fetch("/api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "Application/json",
+          },
+          body: JSON.stringify({
+            username,
+            password,
+            roles,
+          }),
+        });
+        
+        const result = await Postdata.json();
+        if (Postdata.ok) {
+          alert(result.msge);
+          window.location.href = result.redirectedURL; //redirecting based on result
+        } else {
+          alert(result.msge);
+        }
+      }
+
+      form.addEventListener("submit", HandleRegister);
+    </script>
+  </body>
+</html>
