@@ -18,14 +18,14 @@
           type="text"
           id="username"
           placeholder="create Username"
-          required="true"
+          required
         />
         <input
           type="password"
           minlength="6"
           id="password"
           placeholder="create password"
-          required="true"
+          required
         />
 
         <select name="ROLE" id="select-role" required="true">
@@ -61,6 +61,12 @@
           }),
         });
         
+        if (roles === "select") {
+        alert("Please select a valid role.");
+        return;
+        }
+
+
         const result = await Postdata.json();
         if (Postdata.ok) {
           alert(result.msge);
